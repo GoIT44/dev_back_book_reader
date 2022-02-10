@@ -1,7 +1,8 @@
-const express = require('express');
-const logger = require('morgan');
-const cors = require('cors');
-require('dotenv').config();
+import express from 'express';
+import logger from 'morgan';
+import cors from 'cors';
+import dotenv from 'dotenv';
+dotenv.config()
 
 const app = express();
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
@@ -19,4 +20,4 @@ app.use((req, res) => {
     res.status(status).json({ message })
   })
 
-module.exports = app;
+  export default app;

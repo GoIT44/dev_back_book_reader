@@ -14,4 +14,4 @@ const controllerWrapper = (ctrl) => {
 };
 
 
-module.exports = controllerWrapper;
+export default controllerWrapper;

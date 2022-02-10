@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 const {SECRET_KEY} = process.env;
-const {Unauthorized} = require('http-errors');
+import {Unauthorized} from 'http-errors';
 
 const authentication = () => {
     return async(req, res, next) => {
@@ -8,4 +8,4 @@ const authentication = () => {
     }
 }
 
-module.exports = authentication;
+export default authentication;

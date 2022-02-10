@@ -1,8 +1,10 @@
-const controllerWrapper = require('./controllerWrapper');
-const authentication = require('./authentication');
+import controllerWrapper from './controllerWrapper';
+import authentication from './authentication';
+import validation from './validation';
 
 
-module.exports = {
+export default {
     controllerWrapper,
-    authentication
+    authentication,
+    validation
 }
