@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "2.0.2",
+    "version": "1.0.0",
     "title": "Book reader API docs",
-    "description": "Showing off swagger-ui-express",
+    "description": "",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
@@ -11,11 +11,11 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "https://api-br.herokuapp.com/" }],
+  "servers": [{ "url": "https://api-br.herokuapp.com/api/" }],
   "tags": [
     {
       "name": "Auth",
-      "description": "Authorization endpoints"
+      "description": "Registration endpoints"
     }
   ],
   "paths": {
@@ -24,7 +24,6 @@
         "tags": ["Auth"],
         "summary": "User registration",
         "parameters": [],
-        "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Registration's object",
           "required": true,
@@ -57,14 +56,74 @@
           }
         }
       }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User authorization",
+        "parameters": [],
+        "requestBody": {
+          "description": "Authorization's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthorizationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorizationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "User logout",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
       "RegistrationRequest": {
         "type": "object",
-        "required": ["email", "password"],
+        "required": ["name", "email", "password"],
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Ivan"
+          },
           "email": {
             "type": "string",
             "description": "User's email",
@@ -95,10 +154,61 @@
           }
         },
         "example": [
-          { "email": "1@gmail.com", "userId": "1" },
-          { "email": "2@gmail.com", "userId": "2" }
+          {
+            "status": "success",
+            "code": 201,
+            "data": {
+              "message": "Register user successful",
+              "newUser": {
+                "name": "Ivan",
+                "email": "user@example.com"
+              }
+            }
+          }
         ]
-      }
+      },
+      "AuthorizationRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "AuthorizationResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "User's email",
+              "format": "email"
+            },
+            "userId": {
+              "type": "number",
+              "description": "User's id",
+              "example": "32143232436545474"
+            }
+          }
+        },
+        "example": [
+          {
+            "status": "success",
+            "code": 201,
+            "token": "token",
+            "message": "Вот твой токен!!! Пользуйся!!!"
+          }
+        ]
+      }  
     },
     "securitySchemes": {
       "Bearer": {
@@ -108,4 +218,5 @@
       }
     }
   }
+  
 }
