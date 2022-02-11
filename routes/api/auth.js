@@ -1,22 +1,21 @@
-import express from 'express';
+const express = require('express');
 
-import {controllerWrapper, validation, authentication} from '../middleware';
-import {registerJoiSchema, loginJoiSchema} from '../model/users';
+const {controllerWrapper, validation, authentication} = require('../../middleware');
+const {registerJoiSchema, loginJoiSchema} = require('../../model/users');
 
 const router = express.Router();
 
-router.post('/register', validation(registerJoiSchema), async (req, res) => {
+router.post('/register', async (req, res) => {
 
 })
 
-
-router.post("/login", validation(loginJoiSchema), async (req, res) => {
-
-})
-
-router.get("/logout", authentication(), async (req, res) => {
+router.post("/login", async (req, res) => {
 
 })
 
-module.exports = {router};
+router.get("/logout", async (req, res) => {
+
+})
+
+module.exports = router;
 
