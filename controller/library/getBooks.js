@@ -2,9 +2,7 @@ const {Library} = require('../../model');
 
 const getBooks = async (req, res) => {
     const {_id} = req.user;
-
-    const books = await Library.find({ownder: _id}, ['-_id', '-owner']).lean();
-
+    const books = await Library.find({owner: _id}, ['-_id', '-owner']).lean();
     res.json({
         status: 'success',
         code: 200,
