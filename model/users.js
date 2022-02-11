@@ -14,9 +14,17 @@ const loginJoiSchema = Joi.object({
   password: Joi.string().required(),
 });
 
-const usersSchema = Schema(
-  {
-    name: {
+const usersSchema = Schema({
+  name: {
+    type: String,
+    required: [true, 'Name is required']
+  },
+  email: {
+    type: String,
+    required: [true, 'Email is required'],
+    unique: true,
+  },
+    password: {
       type: String,
       required: [true, "Name is required"],
     },
@@ -33,14 +41,12 @@ const usersSchema = Schema(
       type: String,
       default: null,
     },
-    verify: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  { versionKey: false, timestamps: true }
-);
-
+      verify: {
+        type: Boolean,
+        default: false,
+      }
+  }, {versionKey: false, timestamps: true})
+  
 const User = model("user", usersSchema);
 
 module.exports = {

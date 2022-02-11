@@ -2,36 +2,44 @@ const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
 const libraryJoiSchema = Joi.object({
-  name: Joi.string().required(),
-  author: Joi.string().required(),
-  yearOfPublic: Joi.date().required(),
-  numbOfPages: Joi.number().required(),
-});
+    bookTitle: Joi.string().required(),
+    author: Joi.string().required(),
+    publicDate: Joi.date().required(),
+    numbOfPages: Joi.number().required(),
+    readStatus: Joi.string().valueOf('Going to read', 'Reading now', 'Already read')
+})
 
 const librarySchema = Schema({
-  name: {
-    type: String,
-    required: [true, "The title of the book is required."],
-  },
-  author: {
-    type: String,
-    required: [true, "Book Author is required."],
-  },
-  yearOfPublic: {
-    type: Date,
-    required: [true, "Year of publication of the book required"],
-  },
-  numbOfPages: {
-    type: Number,
-    required: [true, "Number of pages is required"],
-  },
-  owner: {
-    type: Schema.Types.ObjectId,
-    ref: "user",
-  },
-});
+    bookTitle: {
+        type: String,
+        required: [true, 'The title of the book is required.'],
+    },
+    author: {
+        type: String,
+        required: [true, 'Book Author is required.']
+    },
+    publicDate: {
+        type: Date,
+        required: [true, 'Year of publication of the book required']
+    },
+    numbOfPages: {
+        type: Number,
+        required: [true, 'Number of pages is required']
+    },
+    readStatus: {
+        type: String,
+        enum: ['Going to read', 'Reading now', 'Already read'],
+        default: 'Going to read'
+    },
+    owner: {
+        // type: String
+        type: Schema.Types.ObjectId,
+        ref: 'user',
+      }
+}, {versionKey: false, timestamps: true})
 
-const Library = model("library", librarySchema);
+const Library = model('library', librarySchema);
+
 
 module.exports = {
   Library,
