@@ -2,14 +2,15 @@ const {Schema, model} = require("mongoose");
 const Joi = require("joi");
 
 const libraryJoiSchema = Joi.object({
-    name: Joi.string().required(),
+    bookTitle: Joi.string().required(),
     author: Joi.string().required(),
-    yearOfPublic: Joi.data().required(),
+    publicDate: Joi.date().required(),
     numbOfPages: Joi.number().required(),
+    readStatus: Joi.string().valueOf('Going to read', 'Reading now', 'Already read')
 })
 
 const librarySchema = Schema({
-    name: {
+    bookTitle: {
         type: String,
         required: [true, 'The title of the book is required.'],
     },
@@ -17,7 +18,7 @@ const librarySchema = Schema({
         type: String,
         required: [true, 'Book Author is required.']
     },
-    yearOfPublic: {
+    publicDate: {
         type: Date,
         required: [true, 'Year of publication of the book required']
     },
@@ -25,7 +26,13 @@ const librarySchema = Schema({
         type: Number,
         required: [true, 'Number of pages is required']
     },
+    readStatus: {
+        type: String,
+        enum: ['Going to read', 'Reading now', 'Already read'],
+        default: 'Going to read'
+    },
     owner: {
+        // type: String
         type: Schema.Types.ObjectId,
         ref: 'user',
       }
