@@ -1,8 +1,8 @@
 const bcrypt = require("bcryptjs");
 const { User } = require("../../model");
-const { BadRequest, Conflict } = require("http-errors");
+const { Conflict } = require("http-errors");
 
-const register = async (req, res, next) => {
+const register = async (req, res) => {
   const { name, email, password } = req.body;
   const user = await User.findOne({ email });
   if (user) {
