@@ -1,13 +1,15 @@
-import express from 'express';
-import logger from 'morgan';
-import cors from 'cors';
-import dotenv from 'dotenv';
-dotenv.config();
+const express = require('express');
+const logger = require ('morgan');
+const cors = require ('cors');
+require('dotenv').config();
 
 
 const app = express();
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
-// import authRouter from './routes/api/auth.js';
+
+
+const authRouter = require('./routes/api/auth');
+
 
 
 app.use(logger(formatsLogger));
@@ -25,4 +27,4 @@ app.use((req, res) => {
     res.status(status).json({ message })
   })
 
-  export default app;
+  module.exports = app;
