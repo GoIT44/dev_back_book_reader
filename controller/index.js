@@ -1,6 +1,8 @@
 const library = require('./library');
+const auth = require("./auth");
 
 
 module.exports = {
-    library
+    library,
+    auth
 }

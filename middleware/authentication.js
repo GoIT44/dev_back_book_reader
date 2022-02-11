@@ -35,7 +35,7 @@ const authentication = () => {
             error.status = 401;
             next(error)
         }
-    }
-}
+      }
+  };
 
 module.exports = authentication;

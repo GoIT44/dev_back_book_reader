@@ -6,6 +6,8 @@ const {libraryJoiSchema} = require('../../model/library');
 
 const router = express.Router();
 
-router.post('/addBook', validation(libraryJoiSchema), controllerWrapper(ctrl.addBook));
+router.get('/', authentication(), controllerWrapper(ctrl.getBooks));
+
+router.post('/addBook', authentication(), validation(libraryJoiSchema), controllerWrapper(ctrl.addBook));
 
 module.exports = router;

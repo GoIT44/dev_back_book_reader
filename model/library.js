@@ -1,4 +1,4 @@
-const {Schema, model} = require("mongoose");
+const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
 const libraryJoiSchema = Joi.object({
@@ -36,13 +36,12 @@ const librarySchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'user',
       }
-})
+}, {versionKey: false, timestamps: true})
 
 const Library = model('library', librarySchema);
 
 
-
 module.exports = {
-    Library,
-    libraryJoiSchema
-}
+  Library,
+  libraryJoiSchema,
+};
