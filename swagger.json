@@ -204,8 +204,12 @@
           {
             "status": "success",
             "code": 201,
-            "token": "token",
-            "message": "Вот твой токен!!! Пользуйся!!!"
+            "data": {
+              "userName": "Ivan",
+              "token": "token",
+              "message": "Вот твой токен! Пользуйся аккуратно!"
+            }
+
           }
         ]
       }  

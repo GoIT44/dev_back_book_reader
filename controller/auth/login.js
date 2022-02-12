@@ -22,8 +22,12 @@ const login = async (req, res, next) => {
   res.json({
     status: "success",
     code: 200,
-    token,
-    message: "Вот твой токен!!! Пользуйся!!!",
+    data: {
+      UserName: user.name,
+      token,
+      message: "Вот твой токен! Пользуйся аккуратно!",
+    }
+    
   });
 };
 
