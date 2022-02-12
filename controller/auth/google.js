@@ -45,6 +45,8 @@ const googleRedirect = async (req, res) => {
         }
     })
 
+    console.log(userData.data);
+
    return res.redirect(
         `${FRONTEND_URL}/google-redirect?email=${userData.data.email}&name=${userData.data.given_name}$last_name=${userData.data.family_name}&avatar=${userData.data.picture}`
     )
