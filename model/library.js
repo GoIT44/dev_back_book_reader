@@ -9,6 +9,12 @@ const libraryJoiSchema = Joi.object({
     readStatus: Joi.string().valueOf('Going to read', 'Reading now', 'Already read')
 })
 
+const ratingJoiSchema = Joi.object({
+    id: Joi.string().required(),
+    rating: Joi.number().required(),
+    comment: Joi.string()
+});
+
 const librarySchema = Schema({
     bookTitle: {
         type: String,
@@ -31,8 +37,13 @@ const librarySchema = Schema({
         enum: ['Going to read', 'Reading now', 'Already read'],
         default: 'Going to read'
     },
+    rating: {
+        type: Number
+    },
+    comment: {
+        type: String
+    },
     owner: {
-        // type: String
         type: Schema.Types.ObjectId,
         ref: 'user',
       }
@@ -44,4 +55,5 @@ const Library = model('library', librarySchema);
 module.exports = {
   Library,
   libraryJoiSchema,
+  ratingJoiSchema
 };
