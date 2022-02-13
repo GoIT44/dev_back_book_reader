@@ -20,7 +20,6 @@ router.get('/google', controllerWrapper(auth.googleAuth));
 
 router.get('/google-redirect', controllerWrapper(auth.googleRedirect));
 
-router.get('/google-auth', controllerWrapper(auth.googleAuthorization));
 
 
 module.exports = router;

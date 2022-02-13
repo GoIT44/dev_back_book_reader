@@ -49,32 +49,17 @@ const googleRedirect = async (req, res) => {
         }
     })
 
-   return res.redirect(
-        `${FRONTEND_URL}/google-auth?email=${userData.data.email}&id=${userData.data.id}&name=${userData.data.given_name}&last_name=${userData.data.family_name}&avatar=${userData.data.picture}`
-    )
-}
-
-const googleAuthorization = async (req, res) => {
-    const {email, name, last_name, id} = req.query;
-    const password = email + id;
+    const {email, name, last_name, id} = userData.data;
 
     const user = await User.findOne({email});
+    let token;
 
     if (user) {
         const payload = {
             id: user._id,
           };
-          const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+          token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
           await User.findByIdAndUpdate(user._id, { token, verify: true });
-
-        res.json({
-            status: "success",
-            code: 201,
-            data: {
-                message: "Успешная авторизация!",
-                token
-            }
-        })
     }
 
     else {
@@ -83,21 +68,18 @@ const googleAuthorization = async (req, res) => {
         const payload = {
             id
           };
-        const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+        token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
         await User.create({ name: name+' '+last_name, email, password: hashPassword, token, verify: true});
-        res.json({
-            status: "success",
-            code: 201,
-            data: {
-                message: "Успешная регистрация и авторизация пользователя!",
-                token
-            }
-        })
     }
+
+   return res.redirect(
+        `${FRONTEND_URL}/google-auth?token=${token}`
+    ) 
 }
+
+
 
 module.exports = {
     googleAuth,
-    googleRedirect,
-    googleAuthorization
+    googleRedirect
 }
