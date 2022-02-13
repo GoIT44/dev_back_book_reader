@@ -16,18 +16,18 @@ const trainingSchema = Schema({
     totalPages: {
         type: Number
     },
-    dateResult: {
-        type: Date,
-    },
     pagesResult: {
         type: Number,
         default: 0
+    },
+    result: {
+        type: Array
     },
     owner: {
         type: Schema.Types.ObjectId,
         ref: 'user',
     }
-})
+}, {versionKey: false})
 
 
 

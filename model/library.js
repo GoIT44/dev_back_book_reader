@@ -47,7 +47,7 @@ const librarySchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'user',
       }
-}, {versionKey: false, timestamps: true})
+}, {versionKey: false})
 
 const Library = model('library', librarySchema);
 
