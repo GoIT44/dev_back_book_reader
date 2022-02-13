@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "2.0.2",
+    "version": "1.0.0",
     "title": "Book reader API docs",
-    "description": "Showing off swagger-ui-express",
+    "description": "",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
@@ -11,11 +11,15 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "https://api-br.herokuapp.com/" }],
+  "servers": [{ "url": "https://api-br.herokuapp.com/api/" }],
   "tags": [
     {
       "name": "Auth",
-      "description": "Authorization endpoints"
+      "description": "Registration endpoints"
+    },
+    {
+      "name": "Library",
+      "description": "Библиотека всех книг"
     }
   ],
   "paths": {
@@ -24,7 +28,6 @@
         "tags": ["Auth"],
         "summary": "User registration",
         "parameters": [],
-        "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Registration's object",
           "required": true,
@@ -57,6 +60,120 @@
           }
         }
       }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User authorization",
+        "parameters": [],
+        "requestBody": {
+          "description": "Authorization's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthorizationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorizationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "User logout",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/library": {
+      "get": {
+        "tags": ["Library"],
+        "summary": "Get all user books",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/library/addbook": {
+      "post": {
+        "tags": ["Library"],
+        "summary": "Add book to plan",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Add book to plan",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddBookRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddBookResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
     }
   },
   "components": {
@@ -65,6 +182,11 @@
         "type": "object",
         "required": ["name", "email", "password"],
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Ivan"
+          },
           "email": {
             "type": "string",
             "description": "User's email",
@@ -95,10 +217,141 @@
           }
         },
         "example": [
-          { "email": "1@gmail.com", "userId": "1" },
-          { "email": "2@gmail.com", "userId": "2" }
+          {
+            "status": "success",
+            "code": 201,
+            "data": {
+              "message": "Register user successful",
+              "newUser": {
+                "name": "Ivan",
+                "email": "user@example.com"
+              }
+            }
+          }
         ]
-      }
+      },
+      "AuthorizationRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "AuthorizationResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "User's email",
+              "format": "email"
+            },
+            "userId": {
+              "type": "number",
+              "description": "User's id",
+              "example": "32143232436545474"
+            }
+          }
+        },
+        "example": [
+          {
+            "status": "success",
+            "code": 201,
+            "data": {
+              "userName": "Ivan",
+              "token": "token",
+              "message": "Вот твой токен! Пользуйся аккуратно!"
+            }
+
+          }
+        ]
+      },
+      "LibraryResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+          }
+        },
+        "example": [
+          {
+            "status": "success",
+            "code": 201,
+            "data": {
+              "books": [
+                {
+                  "bookTitle": "Собор без крестов",
+                  "author": "Шарапов",
+                  "publicDate": "2003-12-02T22:00:00.000Z",
+                  "numbOfPages": 560,
+                  "readStatus": "Going to read",
+                  "__v": 0
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "AddBookRequest": {
+        "type": "object",
+        "required": ["bookTitle", "author", "publicDate", "numbOfPages"],
+        "properties": {
+          "bookTitle": {
+            "type": "string",
+            "description": "Name of the book",
+            "example": "Атлант расправил плечи"
+          },
+          "author": {
+            "type": "string",
+            "description": "Book author",
+            "example": "Айн Рейд"
+          },
+          "publicDate": {
+            "type": "date",
+            "description": "Book publication date",
+            "example": "12.02.2008"
+          },
+          "numbOfPages": {
+            "type": "number",
+            "description": "number of pages in a book",
+            "example": 1070
+          }
+        }
+      },
+      "AddBookResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+          }
+        },
+        "example": [
+          {
+            "status": "success",
+            "code": 201,
+            "data": {
+                "message": "Book added successfully",
+                "result": {
+                  "bookTitle": "Атлант расправил плечи",
+                  "author": "Айн Рейд",
+                  "publicDate": "12.02.2008",
+                  "numbOfPages": 1070,
+                  "readStatus": "Going to read"
+                }
+            }
+        }
+        ]
+      }    
     },
     "securitySchemes": {
       "Bearer": {
@@ -108,4 +361,5 @@
       }
     }
   }
+  
 }
