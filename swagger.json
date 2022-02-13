@@ -63,7 +63,7 @@
     "schemas": {
       "RegistrationRequest": {
         "type": "object",
-        "required": ["email", "password"],
+        "required": ["name", "email", "password"],
         "properties": {
           "email": {
             "type": "string",

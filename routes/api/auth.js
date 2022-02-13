@@ -10,23 +10,17 @@ const { registerJoiSchema, loginJoiSchema } = require("../../model/users");
 
 const router = express.Router();
 
-router.post(
-  "/register",
-  validation(registerJoiSchema),
-  controllerWrapper(auth.register)
-);
+router.post("/register",validation(registerJoiSchema), controllerWrapper(auth.register));
 
-router.post(
-  "/login",
-  validation(loginJoiSchema),
-  controllerWrapper(auth.login)
-);
+router.post("/login", validation(loginJoiSchema), controllerWrapper(auth.login));
 
 router.get("/logout", authentication(), controllerWrapper(auth.logout));
 
 router.get('/google', controllerWrapper(auth.googleAuth));
 
 router.get('/google-redirect', controllerWrapper(auth.googleRedirect));
+
+router.get('/google-auth', controllerWrapper(auth.googleAuthorization));
 
 
 module.exports = router;

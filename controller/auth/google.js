@@ -1,5 +1,9 @@
 const queryString = require('query-string');
 const axios = require('axios');
+const { User } = require('../../model');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { SECRET_KEY } = process.env;
 
 const {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, BASE_URL, FRONTEND_URL} = process.env;
 
@@ -45,14 +49,55 @@ const googleRedirect = async (req, res) => {
         }
     })
 
-    console.log(userData.data);
-
    return res.redirect(
-        `${FRONTEND_URL}/google-redirect?email=${userData.data.email}&name=${userData.data.given_name}$last_name=${userData.data.family_name}&avatar=${userData.data.picture}`
+        `${FRONTEND_URL}/google-auth?email=${userData.data.email}&id=${userData.data.id}&name=${userData.data.given_name}&last_name=${userData.data.family_name}&avatar=${userData.data.picture}`
     )
+}
+
+const googleAuthorization = async (req, res) => {
+    const {email, name, last_name, id} = req.query;
+    const password = email + id;
+
+    const user = await User.findOne({email});
+
+    if (user) {
+        const payload = {
+            id: user._id,
+          };
+          const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+          await User.findByIdAndUpdate(user._id, { token, verify: true });
+
+        res.json({
+            status: "success",
+            code: 201,
+            data: {
+                message: "Успешная авторизация!",
+                token
+            }
+        })
+    }
+
+    else {
+        const salt = await bcrypt.genSalt(10);
+        const hashPassword = await bcrypt.hash(password, salt);
+        const payload = {
+            id
+          };
+        const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+        await User.create({ name: name+' '+last_name, email, password: hashPassword, token, verify: true});
+        res.json({
+            status: "success",
+            code: 201,
+            data: {
+                message: "Успешная регистрация и авторизация пользователя!",
+                token
+            }
+        })
+    }
 }
 
 module.exports = {
     googleAuth,
-    googleRedirect
+    googleRedirect,
+    googleAuthorization
 }
