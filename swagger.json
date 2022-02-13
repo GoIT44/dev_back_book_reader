@@ -319,7 +319,7 @@
           "publicDate": {
             "type": "date",
             "description": "Book publication date",
-            "example": "12.02.2008"
+            "example": "2008-02-13"
           },
           "numbOfPages": {
             "type": "number",
