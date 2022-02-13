@@ -8,5 +8,13 @@
 </head>
 <body>
     <a href="http://localhost:3031/api/auth/google">Google</a>
+
+
+    <script>
+        if ( window.location.search.slice(1).split('=')[0] === 'token') {
+            const token = window.location.search.split('=')[1];
+            console.log(token);
+        }
+    </script>
 </body>
 </html>

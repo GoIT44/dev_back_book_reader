@@ -1,7 +1,7 @@
 const register = require("./register");
 const login = require("./login");
 const logout = require("./logout");
-const {googleAuth, googleRedirect, googleAuthorization} = require('./google');
+const {googleAuth, googleRedirect} = require('./google');
 
 module.exports = {
   register,
@@ -9,5 +9,4 @@ module.exports = {
   logout,
   googleAuth,
   googleRedirect,
-  googleAuthorization
 };
