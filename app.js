@@ -10,6 +10,7 @@ const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 const authRouter = require("./routes/api/auth");
 const libraryRouter = require("./routes/api/library");
+const trainingRouter = require('./routes/api/training')
 
 app.use(logger(formatsLogger));
 app.use(cors());
@@ -19,6 +20,7 @@ app.use(express.static("public"));
 
 app.use("/api/auth", authRouter);
 app.use("/api/library", libraryRouter);
+app.use("/api/training", trainingRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
