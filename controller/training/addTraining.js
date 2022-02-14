@@ -15,13 +15,26 @@ const addTraining = async (req, res) => {
     }
 
     let totalPages = 0;
+    let trainingBooks = [];
+
     for (let i = 0; i < booksTrain.length; i++) {
-       const pages = await Library.findByIdAndUpdate(booksTrain[i], {readStatus: 'Reading now'});
-       totalPages += pages.numbOfPages
+       const library = await Library.findByIdAndUpdate(booksTrain[i], {readStatus: 'Reading now'});
+       totalPages += library.numbOfPages;
+       trainingBooks = [
+            ...trainingBooks,   
+            {
+                id: booksTrain[i],
+                numbOfPages: library.numbOfPages,
+                read: false
+            }
+        ]
     };
 
     const newTraining = {
-        ...req.body,
+        startTrain,
+        endTrain,
+        trainingBooks,
+        booksTrain,
         totalPages,
         owner: _id
     }
@@ -34,7 +47,7 @@ const addTraining = async (req, res) => {
         data: {
             startTrain, 
             endTrain,
-            booksTrain,
+            trainingBooks,
             totalPages
         }
     })

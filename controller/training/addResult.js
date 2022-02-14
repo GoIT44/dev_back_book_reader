@@ -64,9 +64,44 @@ const addResult = async(req, res) => {
         const date = new Date();
         let totalPagesResult = training.pagesResult + pagesResult;
         const time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
-        console.log(time)
         const newResult = [...training.result, {dateResult, time, pagesResult}];
         const newTraining = await Training.findOneAndUpdate({owner:_id}, {pagesResult: totalPagesResult, result: newResult}, {new: true});
+
+        const bookIsRead = [];
+        let countReadPages = 0;
+
+        newTraining.trainingBooks.forEach(item => {
+            bookIsRead.push(item);
+            if (item.read) {
+                countReadPages += totalPagesResult - item.numbOfPages;
+            }
+        })
+
+        console.log(bookIsRead);
+        console.log(countReadPages)
+
+        for (let i = 0; i < bookIsRead.length; i++) {
+            if(bookIsRead[i].read) {
+                if (!bookIsRead[i].read && bookIsRead[i].numbOfPages <= countReadPages) {
+                    bookIsRead[i].read = true;
+                    console.log("Вот эта книга прочитана:", bookIsRead[i].id);
+                    await Training.findOneAndUpdate({owner: _id}, {trainingBooks: bookIsRead});
+                    break;
+                }
+            }
+
+            else {
+                if (!bookIsRead[i].read && bookIsRead[i].numbOfPages <= totalPagesResult) {
+                    bookIsRead[i].read = true;
+                    console.log("Вот эта книга прочитана:", bookIsRead[i].id);
+                    await Training.findOneAndUpdate({owner: _id}, {trainingBooks: bookIsRead});
+                    // await Library.findOneAndUpdate({})
+                    break;
+                }
+            }
+        }
+
+
 
         res.json({
             status: "success",

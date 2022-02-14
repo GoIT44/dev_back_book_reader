@@ -9,7 +9,11 @@ const trainingSchema = Schema({
         type: Date,
         required: [true, 'End of training field is required']
     },
-    booksTrain: {
+    trainingBooks: {
+        type: Array,
+        required: [true, 'Book is required']
+    },
+    booksTrain : {
         type: Array,
         required: [true, 'Book is required']
     },
