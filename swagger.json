@@ -23,6 +23,20 @@
     }
   ],
   "paths": {
+    "/google":{
+      "get": {
+        "tags": ["googleAuth"],
+        "summary": "User google auth",
+        "parameters": [],
+        "description": "необходимо создать роут /google-auth для получения имени и токена `${FRONTEND_URL}/google-auth?token=${token}&name=${name}`.",
+        "responses": {
+          "content": {
+            "application/string": {
+              
+              }}
+            }
+          }
+    },
     "/auth/register": {
       "post": {
         "tags": ["Auth"],
@@ -164,6 +178,41 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AddBookResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/library/addReview": {
+      "post": {
+        "tags": ["Review"],
+        "summary": "leave your rating and feedback",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "leave your rating and feedback",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddReviewResponse"
                 }
               }
             }
@@ -351,7 +400,47 @@
             }
         }
         ]
-      }    
+      },
+          "AddReviewRequest": {
+        "type": "object",
+        "required": ["id", "comment"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "id",
+            "example": "62068e4491030ccfd2ac5d06"
+          },
+          "rating": {
+            "type": "number",
+            "description": "rating",
+            "example": 5
+          },
+          "comment": {
+            "type": "string",
+            "description": "comment",
+            "example": "Отличная книга"
+          }
+        }
+      },
+      "AddReviewResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+          }
+        },
+        "example": [
+          {
+            "status": "success",
+            "code": 201,
+            "data": {
+                "message": "Review added successful",
+                "rating": 5,
+                "comment": "Отличная книга"
+            }
+        }
+        ]
+      }  
     },
     "securitySchemes": {
       "Bearer": {
