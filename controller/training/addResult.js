@@ -69,31 +69,35 @@ const addResult = async(req, res) => {
 
         const bookIsRead = [];
         let countReadPages = 0;
+        let obj;
 
         newTraining.trainingBooks.forEach(item => {
             bookIsRead.push(item);
             if (item.read) {
-                countReadPages += totalPagesResult - item.numbOfPages;
+                countReadPages = totalPagesResult - item.numbOfPages;
             }
         })
 
+    
         console.log(bookIsRead);
-        console.log(countReadPages)
+        console.log(countReadPages);
 
         for (let i = 0; i < bookIsRead.length; i++) {
-            if(bookIsRead[i].read) {
-                if (!bookIsRead[i].read && bookIsRead[i].numbOfPages <= countReadPages) {
-                    bookIsRead[i].read = true;
-                    console.log("Вот эта книга прочитана:", bookIsRead[i].id);
+            if(countReadPages) {
+                console.log("Сейчас работает ветка с наличием прочитаной книги");
+                if (!bookIsRead[0].read && bookIsRead[0].numbOfPages <= countReadPages) {
+                    bookIsRead[0].read = true;
+                    console.log("Вот эта книга прочитана:", bookIsRead[0].id);
                     await Training.findOneAndUpdate({owner: _id}, {trainingBooks: bookIsRead});
                     break;
                 }
             }
-
+            
             else {
-                if (!bookIsRead[i].read && bookIsRead[i].numbOfPages <= totalPagesResult) {
-                    bookIsRead[i].read = true;
-                    console.log("Вот эта книга прочитана:", bookIsRead[i].id);
+                console.log("Сейчас работает ветка без прочитанных книг");
+                if (!bookIsRead[0].read && bookIsRead[0].numbOfPages <= totalPagesResult) {
+                    bookIsRead[0].read = true;
+                    console.log("Вот эта книга прочитана:", bookIsRead[0].id);
                     await Training.findOneAndUpdate({owner: _id}, {trainingBooks: bookIsRead});
                     // await Library.findOneAndUpdate({})
                     break;
