@@ -1,9 +1,18 @@
 const {Training, Library} = require('../../model');
+const {BadRequest} = require('http-errors');
 
 const addTraining = async (req, res) => {
     const {_id} = req.user;
     const {startTrain, endTrain, booksTrain} = req.body;
 
+    const training = await Training.findOne({owner: _id});
+
+    if (training) {
+        throw new BadRequest({
+            status: "error",
+            message: "Тренинг уже добавлен, заверши предыдуший перед добавлением нового"
+        })
+    }
 
     let totalPages = 0;
     for (let i = 0; i < booksTrain.length; i++) {

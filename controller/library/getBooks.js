@@ -18,9 +18,10 @@ const getBooks = async (req, res) => {
         status: 'success',
         code: 200,
         data: {
-            message: 'Андрюха молодец, сделал правильный запрос',
+            userName: req.user.name,
             training,
             books
+
         }
     })
 }
