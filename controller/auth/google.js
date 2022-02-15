@@ -76,7 +76,7 @@ const googleRedirect = async (req, res) => {
 
    return res.redirect(
         `${FRONTEND_URL}/google-auth?token=${token}`
-    ) 
+    )
 }
 
 
