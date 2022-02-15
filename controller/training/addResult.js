@@ -69,14 +69,18 @@ const addResult = async(req, res) => {
 
         const bookIsRead = [];
         let countReadPages = 0;
-        let obj;
+
+        bookIsRead.push(...newTraining.trainingBooks);
 
         newTraining.trainingBooks.forEach(item => {
-            bookIsRead.push(item);
             if (item.read) {
-                countReadPages = totalPagesResult - item.numbOfPages;
+                console.log(item);
+                console.log(totalPagesResult);
+                countReadPages = countReadPages + (totalPagesResult - item.numbOfPages);
             }
         })
+
+
 
     
         console.log(bookIsRead);
@@ -85,24 +89,48 @@ const addResult = async(req, res) => {
         for (let i = 0; i < bookIsRead.length; i++) {
             if(countReadPages) {
                 console.log("Сейчас работает ветка с наличием прочитаной книги");
-                if (!bookIsRead[0].read && bookIsRead[0].numbOfPages <= countReadPages) {
-                    bookIsRead[0].read = true;
-                    console.log("Вот эта книга прочитана:", bookIsRead[0].id);
+                if (!bookIsRead[i].read) {
+                    if (bookIsRead[i].numbOfPages <= countReadPages){
+                        console.log("Вот эта книга прочитана:", bookIsRead[i].id);
+                        bookIsRead[i].read = true;
+                        await Training.findOneAndUpdate({owner: _id}, {trainingBooks: bookIsRead});
+                        break;
+                    }
+                 if  (bookIsRead[i].numbOfPages > countReadPages) {
+                     break
+                    // bookIsRead[0].read = true;
+                    
+                }
+                }
+                
+    
+            }
+
+
+            if (!bookIsRead[i].read) {
+                if (bookIsRead[i].numbOfPages <= totalPagesResult){
+                    console.log("Вот эта книга прочитана:", bookIsRead[i].id);
+                    bookIsRead[i].read = true;
                     await Training.findOneAndUpdate({owner: _id}, {trainingBooks: bookIsRead});
-                    break;
+                    break
+                }
+             if  (bookIsRead[i].numbOfPages > totalPagesResult) {
+                 break
+
                 }
             }
+
             
-            else {
-                console.log("Сейчас работает ветка без прочитанных книг");
-                if (!bookIsRead[0].read && bookIsRead[0].numbOfPages <= totalPagesResult) {
-                    bookIsRead[0].read = true;
-                    console.log("Вот эта книга прочитана:", bookIsRead[0].id);
-                    await Training.findOneAndUpdate({owner: _id}, {trainingBooks: bookIsRead});
-                    // await Library.findOneAndUpdate({})
-                    break;
-                }
-            }
+            // else {
+            //     console.log("Сейчас работает ветка без прочитанных книг");
+            //     if (!bookIsRead[0].read && bookIsRead[0].numbOfPages <= totalPagesResult) {
+            //         bookIsRead[0].read = true;
+            //         console.log("Вот эта книга прочитана:", bookIsRead[0].id);
+            //         await Training.findOneAndUpdate({owner: _id}, {trainingBooks: bookIsRead});
+            //         // await Library.findOneAndUpdate({})
+            //         break;
+            //     }
+            // }
         }
 
 
