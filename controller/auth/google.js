@@ -70,7 +70,7 @@ const googleRedirect = async (req, res) => {
         const payload = {
             id
           };
-        token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+        token = jwt.sign(payload, SECRET_KEY, { expiresIn: "10h" });
         await User.create({ name: name+' '+last_name, email, password: hashPassword, token, verify: true});
     }
 
@@ -78,7 +78,6 @@ const googleRedirect = async (req, res) => {
         `${FRONTEND_URL}/google-auth?token=${token}`
     ) 
 }
-
 
 
 module.exports = {
