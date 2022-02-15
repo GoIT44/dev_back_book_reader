@@ -54,9 +54,10 @@ const googleRedirect = async (req, res) => {
 
   const password = email + id;
 
+
   const user = await User.findOne({ email });
   let token;
-  let userName;
+
 
   if (user) {
     const payload = {
@@ -82,7 +83,7 @@ const googleRedirect = async (req, res) => {
   }
 
   return res.redirect(
-    `${FRONTEND_URL}/google-auth?token=${token}&name=${userName}`
+    `${FRONTEND_URL}/google-auth?token=${token}`
   );
 };
 
