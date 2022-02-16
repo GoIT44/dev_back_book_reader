@@ -29,7 +29,7 @@
   "paths": {
     "/google":{
       "get": {
-        "tags": ["googleAuth"],
+        "tags": ["Auth"],
         "summary": "User google auth",
         "parameters": [],
         "description": "необходимо создать роут /google-auth для получения имени и токена `${FRONTEND_URL}/google-auth?token=${token}&name=${name}`.",
@@ -194,7 +194,7 @@
     },
     "/library/addReview": {
       "post": {
-        "tags": ["Library-Review"],
+        "tags": ["Library"],
         "summary": "leave your rating and feedback",
         "parameters": [],
         "security": [{ "Bearer": [] }],
@@ -229,7 +229,7 @@
     },
     "/training": {
       "get": {
-        "tags": ["training"],
+        "tags": ["Training"],
         "summary": "Get all user training",
         "parameters": [],
         "security": [{ "Bearer": [] }],
@@ -253,7 +253,7 @@
     },
     "/training/addTraining": {
       "post": {
-        "tags": ["Library"],
+        "tags": ["Training"],
         "summary": "Add book to plan",
         "parameters": [],
         "security": [{ "Bearer": [] }],
@@ -288,7 +288,7 @@
     },
     "/training/addResult": {
       "post": {
-        "tags": ["Library"],
+        "tags": ["Training"],
         "summary": "Add book to plan",
         "parameters": [],
         "security": [{ "Bearer": [] }],
@@ -484,7 +484,32 @@
         "items": {
           "type": "object",
           "properties": {
+          "bookTitle": {
+            "type": "string",
+            "description": "Name of the book",
+            "example": "Атлант расправил плечи"
+          },
+          "author": {
+            "type": "string",
+            "description": "Book author",
+            "example": "Айн Рейд"
+          },
+          "publicDate": {
+            "type": "date",
+            "description": "Book publication date",
+            "example": "2008-02-13"
+          },
+          "numbOfPages": {
+            "type": "number",
+            "description": "number of pages in a book",
+            "example": 1070
+          },
+          "readStatus": {
+            "type": "string",
+            "description": "Going to read, Reading now, Already read",
+            "example": "Going to read"
           }
+        }
         },
         "example": [
           {
@@ -529,7 +554,22 @@
         "items": {
           "type": "object",
           "properties": {
+          "id": {
+            "type": "string",
+            "description": "id",
+            "example": "62068e4491030ccfd2ac5d06"
+          },
+          "rating": {
+            "type": "number",
+            "description": "rating",
+            "example": 5
+          },
+          "comment": {
+            "type": "string",
+            "description": "comment",
+            "example": "Отличная книга"
           }
+        }
         },
         "example": [
           {
@@ -558,30 +598,6 @@
               "trainingBooks": [
                 {
                   "startTrain": "Собор без крестов"
-                }
-              ]
-            }
-          }
-        ]
-      },
-      "AddTrainingResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-          }
-        },
-        "example": [
-          {
-            "status": "success",
-            "code": 201,
-            "data": {
-              "books": [
-                {
-                  "startTrain": "2022-02-13",
-                  "endTrain": "2022-02-16",
-                  "trainingBooks": 2,
-                  "totalPages": 1000
                 }
               ]
             }
@@ -617,6 +633,53 @@
         }
       }
       },
+      "AddTrainingResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+          "startTrain": {
+            "type": "Date",
+            "description": "начало тренировки",
+            "example": "2022-02-13"
+          },
+          "endTrain": {
+            "type": "Date",
+            "description": "конец тренировки",
+            "example": "2022-02-16"
+          },
+          "booksTrain": {
+            "type": "Array",
+            "description": "список книг",
+            "example": "Собор без крестов"
+          },
+          "totalPages": {
+            "type": "Number",
+            "description": "общее количество страниц",
+            "example": 1000
+          },
+          "owner": {
+            "type": "Schema.Types.ObjectId"
+        }
+      }
+        },
+        "example": [
+          {
+            "status": "success",
+            "code": 201,
+            "data": {
+              "books": [
+                {
+                  "startTrain": "2022-02-13",
+                  "endTrain": "2022-02-16",
+                  "trainingBooks": 2,
+                  "totalPages": 1000
+                }
+              ]
+            }
+          }
+        ]
+      },
       "AddResultRequest": {
         "type": "object",
         "required": ["endTrain", "trainingBooks", "booksTrain"],
@@ -641,7 +704,17 @@
         "items": {
           "type": "object",
           "properties": {
+          "pagesResult": {
+            "type": "Number",
+            "description": "количество прочитанных страниц",
+            "example": 10
+          },
+          "result": {
+            "type": "Array",
+            "description": "прочитанные книги",
+            "example": "Собор без крестов"
           }
+      }
         },
         "example": [
           {
@@ -652,7 +725,7 @@
         ]
       }
     }
-  },  
+  }, 
     "securitySchemes": {
       "Bearer": {
         "type": "http",
