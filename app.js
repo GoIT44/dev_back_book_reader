@@ -4,19 +4,19 @@ const cors = require("cors");
 const app = express();
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
+
 require("dotenv").config();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 const authRouter = require("./routes/api/auth");
 const libraryRouter = require("./routes/api/library");
-const trainingRouter = require('./routes/api/training')
+const trainingRouter = require("./routes/api/training");
 
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
-
 
 app.use("/api/auth", authRouter);
 app.use("/api/library", libraryRouter);
