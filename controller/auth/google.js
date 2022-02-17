@@ -63,16 +63,20 @@ const googleRedirect = async (req, res) => {
     const payload = {
       id: user._id,
     };
-    token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+    token = jwt.sign(payload, SECRET_KEY, { expiresIn: "10h" });
     await User.findByIdAndUpdate(user._id, { token, verify: true });
-  } else {
+
+  } 
+  
+  else {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
     const payload = {
       id,
     };
-    token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+    token = jwt.sign(payload, SECRET_KEY, { expiresIn: "10h" });
     userName = name + " " + last_name;
+    
     await User.create({
       name: userName,
       email,
