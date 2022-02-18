@@ -12,7 +12,7 @@ const addResult = async(req, res) => {
         })
     }
 
-    const training = await Training.findOne({owner: _id});
+    const training = await Training.findOne({owner: _id}, ['-owner', '-booksTrain']).lean();
 
     if (!training) {
         throw new BadRequest('Тренинг не создан');
@@ -35,7 +35,9 @@ const addResult = async(req, res) => {
             await Training.findOneAndDelete({owner: _id});
 
             for (let i = 0; i < training.booksTrain.length; i++) {
-                await Library.findByIdAndUpdate(training.booksTrain[i], {readStatus: 'Going to read'});
+                if (training.readStatus === 'Reading now') {
+                    await Library.findByIdAndUpdate(training.booksTrain[i], {readStatus: 'Going to read'});
+                }
              };
 
             res.json({
@@ -65,7 +67,7 @@ const addResult = async(req, res) => {
         let totalPagesResult = training.pagesResult + pagesResult;
         const time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
         const newResult = [...training.result, {dateResult, time, pagesResult}];
-        const newTraining = await Training.findOneAndUpdate({owner:_id}, {pagesResult: totalPagesResult, result: newResult}, {new: true});
+        const newTraining = await Training.findOneAndUpdate({owner:_id}, {pagesResult: totalPagesResult, result: newResult}, {new: true}).lean();
 
         const bookIsRead = [];
         let countReadPages = 0;
@@ -87,7 +89,6 @@ const addResult = async(req, res) => {
                 console.log("Сейчас работает ветка с наличием прочитаной книги");
                 if (!bookIsRead[0].read && bookIsRead[0].numbOfPages <= countReadPages) {
                     bookIsRead[0].read = true;
-                    console.log("Вот эта книга прочитана:", bookIsRead[0].id);
                     await Training.findOneAndUpdate({owner: _id}, {trainingBooks: bookIsRead});
                     break;
                 }

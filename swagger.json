@@ -436,12 +436,28 @@
             "data": {
               "books": [
                 {
-                  "bookTitle": "Собор без крестов",
-                  "author": "Шарапов",
-                  "publicDate": "2003-12-02T22:00:00.000Z",
-                  "numbOfPages": 560,
-                  "readStatus": "Going to read",
-                  "__v": 0
+                    "_id": "620fc9f7d76904b54be77ac0",
+                    "bookTitle": "Атлант расправил плечи",
+                    "author": "Айн Рейд",
+                    "publicDate": "2008-02-13T00:00:00.000Z",
+                    "numbOfPages": 1070,
+                    "readStatus": "Going to read"
+                },
+                {
+                    "_id": "620fcac7212f229483e7b66b",
+                    "bookTitle": "Думай и богатей",
+                    "author": "Наполеон Хилл",
+                    "publicDate": "1937-02-13T00:00:00.000Z",
+                    "numbOfPages": 256,
+                    "readStatus": "Going to read"
+                },
+                {
+                    "_id": "620fcb38212f229483e7b66e",
+                    "bookTitle": "Пиши, сокращай",
+                    "author": "Людмила Сарычева, Максим Ильяхов",
+                    "publicDate": "2019-02-13T00:00:00.000Z",
+                    "numbOfPages": 440,
+                    "readStatus": "Going to read"
                 }
               ]
             }
@@ -471,11 +487,6 @@
             "type": "number",
             "description": "number of pages in a book",
             "example": 1070
-          },
-          "readStatus": {
-            "type": "string",
-            "description": "Going to read, Reading now, Already read",
-            "example": "Going to read"
           }
         }
       },
@@ -503,11 +514,6 @@
             "type": "number",
             "description": "number of pages in a book",
             "example": 1070
-          },
-          "readStatus": {
-            "type": "string",
-            "description": "Going to read, Reading now, Already read",
-            "example": "Going to read"
           }
         }
         },
@@ -593,20 +599,67 @@
         "example": [
           {
             "status": "success",
-            "code": 201,
+            "code": 200,
             "data": {
-              "trainingBooks": [
-                {
-                  "startTrain": "Собор без крестов"
-                }
-              ]
+                "userName": "Артем Кулыгин",
+                "training": {
+                    "_id": "620fcf2bdefb64c52bfa7e6a",
+                    "startTrain": "2022-02-11T00:00:00.000Z",
+                    "endTrain": "2022-02-20T00:00:00.000Z",
+                    "trainingBooks": [
+                        {
+                            "id": "620fc9f7d76904b54be77ac0",
+                            "numbOfPages": 1070,
+                            "read": false
+                        },
+                        {
+                            "id": "620fcac7212f229483e7b66b",
+                            "numbOfPages": 256,
+                            "read": false
+                        },
+                        {
+                            "id": "620fcb38212f229483e7b66e",
+                            "numbOfPages": 440,
+                            "read": false
+                        }
+                    ],
+                    "totalPages": 1766,
+                    "pagesResult": 0,
+                    "result": []
+                },
+                "books": [
+                    {
+                        "_id": "620fc9f7d76904b54be77ac0",
+                        "bookTitle": "Атлант расправил плечи",
+                        "author": "Айн Рейд",
+                        "publicDate": "2008-02-13T00:00:00.000Z",
+                        "numbOfPages": 1070,
+                        "readStatus": "Reading now"
+                    },
+                    {
+                        "_id": "620fcac7212f229483e7b66b",
+                        "bookTitle": "Думай и богатей",
+                        "author": "Наполеон Хилл",
+                        "publicDate": "1937-02-13T00:00:00.000Z",
+                        "numbOfPages": 256,
+                        "readStatus": "Reading now"
+                    },
+                    {
+                        "_id": "620fcb38212f229483e7b66e",
+                        "bookTitle": "Пиши, сокращай",
+                        "author": "Людмила Сарычева, Максим Ильяхов",
+                        "publicDate": "2019-02-13T00:00:00.000Z",
+                        "numbOfPages": 440,
+                        "readStatus": "Reading now"
+                    }
+                ]
             }
-          }
+        }
         ]
       },
       "AddTrainingRequest": {
         "type": "object",
-        "required": ["endTrain", "trainingBooks", "booksTrain"],
+        "required": ["endTrain", "startTrain", "booksTrain"],
         "properties": {
           "startTrain": {
             "type": "Date",
@@ -620,17 +673,9 @@
           },
           "booksTrain": {
             "type": "Array",
-            "description": "список книг",
-            "example": "Собор без крестов"
-          },
-          "totalPages": {
-            "type": "Number",
-            "description": "общее количество страниц",
-            "example": 1000
-          },
-          "owner": {
-            "type": "Schema.Types.ObjectId"
-        }
+            "description": "Массив id книг",
+            "example": ["620fc9f7d76904b54be77ac0", "620fcac7212f229483e7b66b", "620fcb38212f229483e7b66e"]
+          }
       }
       },
       "AddTrainingResponse": {
@@ -668,35 +713,44 @@
             "status": "success",
             "code": 201,
             "data": {
-              "books": [
-                {
-                  "startTrain": "2022-02-13",
-                  "endTrain": "2022-02-16",
-                  "trainingBooks": 2,
-                  "totalPages": 1000
-                }
-              ]
+                "startTrain": "2022-02-11",
+                "endTrain": "2022-02-20",
+                "trainingBooks": [
+                    {
+                        "id": "620fc9f7d76904b54be77ac0",
+                        "numbOfPages": 1070,
+                        "read": false
+                    },
+                    {
+                        "id": "620fcac7212f229483e7b66b",
+                        "numbOfPages": 256,
+                        "read": false
+                    },
+                    {
+                        "id": "620fcb38212f229483e7b66e",
+                        "numbOfPages": 440,
+                        "read": false
+                    }
+                ],
+                "totalPages": 1766
             }
-          }
+        }
         ]
       },
       "AddResultRequest": {
         "type": "object",
-        "required": ["endTrain", "trainingBooks", "booksTrain"],
+        "required": ["dateResult", "pageResult"],
         "properties": {
+          "dateResult": {
+            "type": "Date",
+            "description": "Дата результата",
+            "example": "2022-02-14"
+          },
           "pagesResult": {
             "type": "Number",
             "description": "количество прочитанных страниц",
             "example": 10
-          },
-          "result": {
-            "type": "Array",
-            "description": "прочитанные книги",
-            "example": "Собор без крестов"
-          },
-          "owner": {
-            "type": "Schema.Types.ObjectId"
-        }
+          }
       }
       },
       "AddResultResponse": {
@@ -720,18 +774,66 @@
           {
             "status": "success",
             "code": 201,
-            "message": "Ти молодчина, але потрібно швидше! Наступного разу тобі все вдасться)"
-          }
+            "message": "Ты молодец, результат записан!!!",
+            "data": {
+                "newTraining": {
+                    "_id": "620fcf2bdefb64c52bfa7e6a",
+                    "startTrain": "2022-02-11T00:00:00.000Z",
+                    "endTrain": "2022-02-20T00:00:00.000Z",
+                    "trainingBooks": [
+                        {
+                            "id": "620fc9f7d76904b54be77ac0",
+                            "numbOfPages": 1070,
+                            "read": false
+                        },
+                        {
+                            "id": "620fcac7212f229483e7b66b",
+                            "numbOfPages": 256,
+                            "read": false
+                        },
+                        {
+                            "id": "620fcb38212f229483e7b66e",
+                            "numbOfPages": 440,
+                            "read": false
+                        }
+                    ],
+                    "totalPages": 1766,
+                    "pagesResult": 315,
+                    "result": [
+                        {
+                            "dateResult": "2022-02-14",
+                            "time": "19:40:8",
+                            "pagesResult": 95
+                        },
+                        {
+                            "dateResult": "2022-02-15",
+                            "time": "19:41:10",
+                            "pagesResult": 60
+                        },
+                        {
+                            "dateResult": "2022-02-16",
+                            "time": "19:54:24",
+                            "pagesResult": 80
+                        },
+                        {
+                            "dateResult": "2022-02-16",
+                            "time": "20:2:4",
+                            "pagesResult": 80
+                        }
+                    ]
+                }
+            }
+        }
         ]
       }
-    }
-  }, 
+    },
     "securitySchemes": {
       "Bearer": {
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
       }
+    }
   }
 }
 

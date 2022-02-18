@@ -3,7 +3,7 @@ const {Library, Training} = require('../../model');
 const getBooks = async (req, res) => {
     const {_id} = req.user;
     const books = await Library.find({owner: _id}, ['-owner']).lean();
-    const training = await Training.findOne({owner: _id}, ['-owner']).lean();
+    const training = await Training.findOne({owner: _id}, ['-owner', '-booksTrain']).lean();
 
     if (training) {
         if (new Date() > training.endTrain) {
