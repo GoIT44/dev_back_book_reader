@@ -36,9 +36,9 @@
         "responses": {
           "content": {
             "application/string":"token"
-              }
+                    }
             }
-            }
+          }
     },
     "/auth/register": {
       "post": {
@@ -140,7 +140,7 @@
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "responses": {
-          "200": {
+          "201": {
             "description": "Successful operation",
             "content": {
               "application/json": {
@@ -234,7 +234,7 @@
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "responses": {
-          "200": {
+          "20": {
             "description": "Successful operation",
             "content": {
               "application/json": {
@@ -289,11 +289,11 @@
     "/training/addResult": {
       "post": {
         "tags": ["Training"],
-        "summary": "Add book to plan",
+        "summary": "result",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
-          "description": "Add book to plan",
+          "description": "result training",
           "required": true,
           "content": {
             "application/json": {
@@ -695,17 +695,14 @@
           },
           "booksTrain": {
             "type": "Array",
-            "description": "список книг",
-            "example": "Собор без крестов"
+            "description": "список ID",
+            "example": ["0l0l9k88j8j7h76f4d43","65r4e39k88j8j79iu76trd43"]
           },
           "totalPages": {
             "type": "Number",
             "description": "общее количество страниц",
             "example": 1000
-          },
-          "owner": {
-            "type": "Schema.Types.ObjectId"
-        }
+          }
       }
         },
         "example": [
@@ -761,12 +758,12 @@
           "pagesResult": {
             "type": "Number",
             "description": "количество прочитанных страниц",
-            "example": 10
+            "example": 1000
           },
           "result": {
             "type": "Array",
             "description": "прочитанные книги",
-            "example": "Собор без крестов"
+            "example": ["2w3e4r5t6y7u8i9o9i8u7"]
           }
       }
         },
