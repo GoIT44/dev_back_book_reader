@@ -56,7 +56,6 @@ const googleRedirect = async (req, res) => {
 
   const user = await User.findOne({ email });
   let token;
-  let userName;
 
   if (user) {
     const payload = {
@@ -71,9 +70,9 @@ const googleRedirect = async (req, res) => {
       id,
     };
     token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
-    userName = name + " " + last_name;
+
     await User.create({
-      name: userName,
+      name,
       email,
       password: hashPassword,
       token,
@@ -82,7 +81,7 @@ const googleRedirect = async (req, res) => {
   }
 
   return res.redirect(
-    `${FRONTEND_URL}/google-auth?token=${token}&name=${userName}`
+    `${FRONTEND_URL}/google-auth?token=${token}`
   );
 };
 
