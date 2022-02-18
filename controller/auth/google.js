@@ -50,31 +50,31 @@ const googleRedirect = async (req, res) => {
     },
   });
 
-  const { email, name, last_name, id } = userData.data;
+  const { email, name, id } = userData.data;
 
   const password = email + id;
 
-
   const user = await User.findOne({ email });
   let token;
-
 
   if (user) {
     const payload = {
       id: user._id,
     };
-    token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+    token = jwt.sign(payload, SECRET_KEY, { expiresIn: "10h" });
     await User.findByIdAndUpdate(user._id, { token, verify: true });
-  } else {
+  } 
+  
+  else {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
     const payload = {
       id,
     };
-    token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
-    userName = name + " " + last_name;
+    token = jwt.sign(payload, SECRET_KEY, { expiresIn: "10h" });
+    
     await User.create({
-      name: userName,
+      name,
       email,
       password: hashPassword,
       token,
@@ -84,7 +84,7 @@ const googleRedirect = async (req, res) => {
 
   return res.redirect(
     `${FRONTEND_URL}/google-auth?token=${token}`
-  );
+  )
 };
 
 module.exports = {
