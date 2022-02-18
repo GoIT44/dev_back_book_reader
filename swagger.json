@@ -15,25 +15,28 @@
   "tags": [
     {
       "name": "Auth",
-      "description": "Registration endpoints"
+      "description": "Регистрация и Авторизация"
     },
     {
       "name": "Library",
       "description": "Библиотека всех книг"
+    },
+    {
+      "name": "Training",
+      "description": "Планирование тренировки"
     }
   ],
   "paths": {
     "/google":{
       "get": {
-        "tags": ["googleAuth"],
+        "tags": ["Auth"],
         "summary": "User google auth",
         "parameters": [],
         "description": "необходимо создать роут /google-auth для получения имени и токена `${FRONTEND_URL}/google-auth?token=${token}&name=${name}`.",
         "responses": {
           "content": {
-            "application/string": {
-              
-              }}
+            "application/string":"token"
+                    }
             }
           }
     },
@@ -191,7 +194,7 @@
     },
     "/library/addReview": {
       "post": {
-        "tags": ["Review"],
+        "tags": ["Library"],
         "summary": "leave your rating and feedback",
         "parameters": [],
         "security": [{ "Bearer": [] }],
@@ -213,6 +216,100 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AddReviewResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/training": {
+      "get": {
+        "tags": ["Training"],
+        "summary": "Get all user training",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "20": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrainingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/training/addTraining": {
+      "post": {
+        "tags": ["Training"],
+        "summary": "Add book to plan",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Add book to plan",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTrainingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddTrainingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/training/addResult": {
+      "post": {
+        "tags": ["Training"],
+        "summary": "result",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "result training",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddResultRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddResultResponse"
                 }
               }
             }
@@ -339,12 +436,28 @@
             "data": {
               "books": [
                 {
-                  "bookTitle": "Собор без крестов",
-                  "author": "Шарапов",
-                  "publicDate": "2003-12-02T22:00:00.000Z",
-                  "numbOfPages": 560,
-                  "readStatus": "Going to read",
-                  "__v": 0
+                    "_id": "620fc9f7d76904b54be77ac0",
+                    "bookTitle": "Атлант расправил плечи",
+                    "author": "Айн Рейд",
+                    "publicDate": "2008-02-13T00:00:00.000Z",
+                    "numbOfPages": 1070,
+                    "readStatus": "Going to read"
+                },
+                {
+                    "_id": "620fcac7212f229483e7b66b",
+                    "bookTitle": "Думай и богатей",
+                    "author": "Наполеон Хилл",
+                    "publicDate": "1937-02-13T00:00:00.000Z",
+                    "numbOfPages": 256,
+                    "readStatus": "Going to read"
+                },
+                {
+                    "_id": "620fcb38212f229483e7b66e",
+                    "bookTitle": "Пиши, сокращай",
+                    "author": "Людмила Сарычева, Максим Ильяхов",
+                    "publicDate": "2019-02-13T00:00:00.000Z",
+                    "numbOfPages": 440,
+                    "readStatus": "Going to read"
                 }
               ]
             }
@@ -382,7 +495,27 @@
         "items": {
           "type": "object",
           "properties": {
+          "bookTitle": {
+            "type": "string",
+            "description": "Name of the book",
+            "example": "Атлант расправил плечи"
+          },
+          "author": {
+            "type": "string",
+            "description": "Book author",
+            "example": "Айн Рейд"
+          },
+          "publicDate": {
+            "type": "date",
+            "description": "Book publication date",
+            "example": "2008-02-13"
+          },
+          "numbOfPages": {
+            "type": "number",
+            "description": "number of pages in a book",
+            "example": 1070
           }
+        }
         },
         "example": [
           {
@@ -401,9 +534,9 @@
         }
         ]
       },
-          "AddReviewRequest": {
+      "AddReviewRequest": {
         "type": "object",
-        "required": ["id", "comment"],
+        "required": ["id", "rating"],
         "properties": {
           "id": {
             "type": "string",
@@ -427,7 +560,22 @@
         "items": {
           "type": "object",
           "properties": {
+          "id": {
+            "type": "string",
+            "description": "id",
+            "example": "62068e4491030ccfd2ac5d06"
+          },
+          "rating": {
+            "type": "number",
+            "description": "rating",
+            "example": 5
+          },
+          "comment": {
+            "type": "string",
+            "description": "comment",
+            "example": "Отличная книга"
           }
+        }
         },
         "example": [
           {
@@ -440,7 +588,241 @@
             }
         }
         ]
-      }  
+      },
+      "TrainingResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+          }
+        },
+        "example": [
+          {
+            "status": "success",
+            "code": 200,
+            "data": {
+                "userName": "Артем Кулыгин",
+                "training": {
+                    "_id": "620fcf2bdefb64c52bfa7e6a",
+                    "startTrain": "2022-02-11T00:00:00.000Z",
+                    "endTrain": "2022-02-20T00:00:00.000Z",
+                    "trainingBooks": [
+                        {
+                            "id": "620fc9f7d76904b54be77ac0",
+                            "numbOfPages": 1070,
+                            "read": false
+                        },
+                        {
+                            "id": "620fcac7212f229483e7b66b",
+                            "numbOfPages": 256,
+                            "read": false
+                        },
+                        {
+                            "id": "620fcb38212f229483e7b66e",
+                            "numbOfPages": 440,
+                            "read": false
+                        }
+                    ],
+                    "totalPages": 1766,
+                    "pagesResult": 0,
+                    "result": []
+                },
+                "books": [
+                    {
+                        "_id": "620fc9f7d76904b54be77ac0",
+                        "bookTitle": "Атлант расправил плечи",
+                        "author": "Айн Рейд",
+                        "publicDate": "2008-02-13T00:00:00.000Z",
+                        "numbOfPages": 1070,
+                        "readStatus": "Reading now"
+                    },
+                    {
+                        "_id": "620fcac7212f229483e7b66b",
+                        "bookTitle": "Думай и богатей",
+                        "author": "Наполеон Хилл",
+                        "publicDate": "1937-02-13T00:00:00.000Z",
+                        "numbOfPages": 256,
+                        "readStatus": "Reading now"
+                    },
+                    {
+                        "_id": "620fcb38212f229483e7b66e",
+                        "bookTitle": "Пиши, сокращай",
+                        "author": "Людмила Сарычева, Максим Ильяхов",
+                        "publicDate": "2019-02-13T00:00:00.000Z",
+                        "numbOfPages": 440,
+                        "readStatus": "Reading now"
+                    }
+                ]
+            }
+        }
+        ]
+      },
+      "AddTrainingRequest": {
+        "type": "object",
+        "required": ["endTrain", "startTrain", "booksTrain"],
+        "properties": {
+          "startTrain": {
+            "type": "Date",
+            "description": "начало тренировки",
+            "example": "2022-02-13"
+          },
+          "endTrain": {
+            "type": "Date",
+            "description": "конец тренировки",
+            "example": "2022-02-16"
+          },
+          "booksTrain": {
+            "type": "Array",
+            "description": "Массив id книг",
+            "example": ["620fc9f7d76904b54be77ac0", "620fcac7212f229483e7b66b", "620fcb38212f229483e7b66e"]
+          }
+      }
+      },
+      "AddTrainingResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+          "startTrain": {
+            "type": "Date",
+            "description": "начало тренировки",
+            "example": "2022-02-13"
+          },
+          "endTrain": {
+            "type": "Date",
+            "description": "конец тренировки",
+            "example": "2022-02-16"
+          },
+          "booksTrain": {
+            "type": "Array",
+            "description": "список ID",
+            "example": ["0l0l9k88j8j7h76f4d43","65r4e39k88j8j79iu76trd43"]
+          },
+          "totalPages": {
+            "type": "Number",
+            "description": "общее количество страниц",
+            "example": 1000
+          }
+      }
+        },
+        "example": [
+          {
+            "status": "success",
+            "code": 201,
+            "data": {
+                "startTrain": "2022-02-11",
+                "endTrain": "2022-02-20",
+                "trainingBooks": [
+                    {
+                        "id": "620fc9f7d76904b54be77ac0",
+                        "numbOfPages": 1070,
+                        "read": false
+                    },
+                    {
+                        "id": "620fcac7212f229483e7b66b",
+                        "numbOfPages": 256,
+                        "read": false
+                    },
+                    {
+                        "id": "620fcb38212f229483e7b66e",
+                        "numbOfPages": 440,
+                        "read": false
+                    }
+                ],
+                "totalPages": 1766
+            }
+        }
+        ]
+      },
+      "AddResultRequest": {
+        "type": "object",
+        "required": ["dateResult", "pageResult"],
+        "properties": {
+          "dateResult": {
+            "type": "Date",
+            "description": "Дата результата",
+            "example": "2022-02-14"
+          },
+          "pagesResult": {
+            "type": "Number",
+            "description": "количество прочитанных страниц",
+            "example": 10
+          }
+      }
+      },
+      "AddResultResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+          "pagesResult": {
+            "type": "Number",
+            "description": "количество прочитанных страниц",
+            "example": 1000
+          },
+          "result": {
+            "type": "Array",
+            "description": "прочитанные книги",
+            "example": ["2w3e4r5t6y7u8i9o9i8u7"]
+          }
+      }
+        },
+        "example": [
+          {
+            "status": "success",
+            "code": 201,
+            "message": "Ты молодец, результат записан!!!",
+            "data": {
+                "newTraining": {
+                    "_id": "620fcf2bdefb64c52bfa7e6a",
+                    "startTrain": "2022-02-11T00:00:00.000Z",
+                    "endTrain": "2022-02-20T00:00:00.000Z",
+                    "trainingBooks": [
+                        {
+                            "id": "620fc9f7d76904b54be77ac0",
+                            "numbOfPages": 1070,
+                            "read": false
+                        },
+                        {
+                            "id": "620fcac7212f229483e7b66b",
+                            "numbOfPages": 256,
+                            "read": false
+                        },
+                        {
+                            "id": "620fcb38212f229483e7b66e",
+                            "numbOfPages": 440,
+                            "read": false
+                        }
+                    ],
+                    "totalPages": 1766,
+                    "pagesResult": 315,
+                    "result": [
+                        {
+                            "dateResult": "2022-02-14",
+                            "time": "19:40:8",
+                            "pagesResult": 95
+                        },
+                        {
+                            "dateResult": "2022-02-15",
+                            "time": "19:41:10",
+                            "pagesResult": 60
+                        },
+                        {
+                            "dateResult": "2022-02-16",
+                            "time": "19:54:24",
+                            "pagesResult": 80
+                        },
+                        {
+                            "dateResult": "2022-02-16",
+                            "time": "20:2:4",
+                            "pagesResult": 80
+                        }
+                    ]
+                }
+            }
+        }
+        ]
+      }
     },
     "securitySchemes": {
       "Bearer": {
@@ -450,5 +832,4 @@
       }
     }
   }
-  
 }
