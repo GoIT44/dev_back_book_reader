@@ -49,7 +49,9 @@ const addResult = async(req, res) => {
             await Training.findOneAndDelete({owner: _id});
 
             for (let i = 0; i < training.booksTrain.length; i++) {
-                await Library.findByIdAndUpdate(training.booksTrain[i], {readStatus: 'Already read'});
+                if (training.readStatus === 'Reading now') {
+                    await Library.findByIdAndUpdate(training.booksTrain[i], {readStatus: 'Already read'});
+                }
              };
     
             res.json({
