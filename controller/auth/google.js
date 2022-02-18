@@ -50,7 +50,9 @@ const googleRedirect = async (req, res) => {
     },
   });
 
-  const { email, name, last_name, id } = userData.data;
+  console.log(userData.data);
+
+  const { email, name, id } = userData.data;
 
   const password = email + id;
 
@@ -58,14 +60,12 @@ const googleRedirect = async (req, res) => {
   const user = await User.findOne({ email });
   let token;
 
-
   if (user) {
     const payload = {
       id: user._id,
     };
     token = jwt.sign(payload, SECRET_KEY, { expiresIn: "10h" });
     await User.findByIdAndUpdate(user._id, { token, verify: true });
-
   } 
   
   else {
@@ -75,10 +75,9 @@ const googleRedirect = async (req, res) => {
       id,
     };
     token = jwt.sign(payload, SECRET_KEY, { expiresIn: "10h" });
-    userName = name + " " + last_name;
     
     await User.create({
-      name: userName,
+      name,
       email,
       password: hashPassword,
       token,
