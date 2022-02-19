@@ -4,7 +4,7 @@ const Joi = require("joi");
 const libraryJoiSchema = Joi.object({
     bookTitle: Joi.string().required(),
     author: Joi.string().required(),
-    publicDate: Joi.date().required(),
+    publicDate: Joi.string().required(),
     numbOfPages: Joi.number().required(),
     readStatus: Joi.string().valueOf('Going to read', 'Reading now', 'Already read')
 })
@@ -25,7 +25,7 @@ const librarySchema = Schema({
         required: [true, 'Book Author is required.']
     },
     publicDate: {
-        type: Date,
+        type: String,
         required: [true, 'Year of publication of the book required']
     },
     numbOfPages: {

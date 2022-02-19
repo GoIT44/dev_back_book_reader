@@ -439,7 +439,7 @@
                     "_id": "620fc9f7d76904b54be77ac0",
                     "bookTitle": "Атлант расправил плечи",
                     "author": "Айн Рейд",
-                    "publicDate": "2008-02-13T00:00:00.000Z",
+                    "publicDate": "2008",
                     "numbOfPages": 1070,
                     "readStatus": "Going to read"
                 },
@@ -447,7 +447,7 @@
                     "_id": "620fcac7212f229483e7b66b",
                     "bookTitle": "Думай и богатей",
                     "author": "Наполеон Хилл",
-                    "publicDate": "1937-02-13T00:00:00.000Z",
+                    "publicDate": "1937",
                     "numbOfPages": 256,
                     "readStatus": "Going to read"
                 },
@@ -455,7 +455,7 @@
                     "_id": "620fcb38212f229483e7b66e",
                     "bookTitle": "Пиши, сокращай",
                     "author": "Людмила Сарычева, Максим Ильяхов",
-                    "publicDate": "2019-02-13T00:00:00.000Z",
+                    "publicDate": "2019",
                     "numbOfPages": 440,
                     "readStatus": "Going to read"
                 }
@@ -479,9 +479,9 @@
             "example": "Айн Рейд"
           },
           "publicDate": {
-            "type": "date",
+            "type": "string",
             "description": "Book publication date",
-            "example": "2008-02-13"
+            "example": "2008"
           },
           "numbOfPages": {
             "type": "number",
@@ -508,7 +508,7 @@
           "publicDate": {
             "type": "date",
             "description": "Book publication date",
-            "example": "2008-02-13"
+            "example": "2008"
           },
           "numbOfPages": {
             "type": "number",
@@ -526,7 +526,7 @@
                 "result": {
                   "bookTitle": "Атлант расправил плечи",
                   "author": "Айн Рейд",
-                  "publicDate": "12.02.2008",
+                  "publicDate": "2008",
                   "numbOfPages": 1070,
                   "readStatus": "Going to read"
                 }
@@ -632,7 +632,7 @@
                         "_id": "620fc9f7d76904b54be77ac0",
                         "bookTitle": "Атлант расправил плечи",
                         "author": "Айн Рейд",
-                        "publicDate": "2008-02-13T00:00:00.000Z",
+                        "publicDate": "2008",
                         "numbOfPages": 1070,
                         "readStatus": "Reading now"
                     },
@@ -640,7 +640,7 @@
                         "_id": "620fcac7212f229483e7b66b",
                         "bookTitle": "Думай и богатей",
                         "author": "Наполеон Хилл",
-                        "publicDate": "1937-02-13T00:00:00.000Z",
+                        "publicDate": "1937",
                         "numbOfPages": 256,
                         "readStatus": "Reading now"
                     },
@@ -648,7 +648,7 @@
                         "_id": "620fcb38212f229483e7b66e",
                         "bookTitle": "Пиши, сокращай",
                         "author": "Людмила Сарычева, Максим Ильяхов",
-                        "publicDate": "2019-02-13T00:00:00.000Z",
+                        "publicDate": "2019",
                         "numbOfPages": 440,
                         "readStatus": "Reading now"
                     }
