@@ -3,10 +3,13 @@ const { SECRET_KEY } = process.env;
 const { Unauthorized } = require("http-errors"); 
 const { User } = require("../model"); 
  
-const authentication = () => { 
+const authentication = () => {
   return async (req, res, next) => { 
     const { authorization = "" } = req.headers; 
+
+    
     const [bearer, token] = authorization.split(" "); 
+    console.log(token);
     if (bearer !== "Bearer") { 
       const error = new Unauthorized(); 
       next(error); 
