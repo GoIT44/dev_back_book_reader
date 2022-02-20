@@ -432,8 +432,10 @@
         "example": [
           {
             "status": "success",
-            "code": 201,
+            "code": 200,
             "data": {
+              "userName": "Артем Кулыгин",
+              "training": null,
               "books": [
                 {
                     "_id": "620fc9f7d76904b54be77ac0",
