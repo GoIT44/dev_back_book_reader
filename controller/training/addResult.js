@@ -34,8 +34,10 @@ const addResult = async(req, res) => {
         if (new Date() > training.endTrain) {
             await Training.findOneAndDelete({owner: _id});
 
-            for (let i = 0; i < training.booksTrain.length; i++) {
-                await Library.findByIdAndUpdate(training.booksTrain[i], {readStatus: 'Going to read'});
+            for (let i = 0; i < training.trainingBooks.length; i++) {
+                if (!training.trainingBooks[i].read) {
+                    await Library.findByIdAndUpdate(training.trainingBooks[i].id, {readStatus: 'Going to read'});
+                }
              };
 
             res.json({
@@ -63,6 +65,22 @@ const addResult = async(req, res) => {
     }
 
     else {
+
+        if (new Date() > training.endTrain) {
+            await Training.findOneAndDelete({owner: _id});
+            for (let i = 0; i < training.trainingBooks.length; i++) {
+                if (!training.trainingBooks[i].read) {
+                    await Library.findByIdAndUpdate(training.trainingBooks[i].id, {readStatus: 'Going to read'});
+                }
+             };
+
+            res.json({
+                status: "success",
+                code: 201,
+                message: "Ти молодчина, але потрібно швидше! Наступного разу тобі все вдасться)"
+            })
+        }
+
         const date = new Date();
         let totalPagesResult = training.pagesResult + pagesResult;
         const time = date.getHours().toString().padStart(2, '0')+':'+date.getMinutes().toString().padStart(2, '0')+':'+date.getSeconds().toString().padStart(2, '0');

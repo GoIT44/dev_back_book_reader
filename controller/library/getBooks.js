@@ -7,8 +7,10 @@ const getBooks = async (req, res) => {
 
     if (training) {
         if (new Date() > training.endTrain) {
-            for (let i = 0; i < training.booksTrain.length; i++) {
-                await Library.findByIdAndUpdate(training.booksTrain[i], {readStatus: 'Going to read'});
+            for (let i = 0; i < training.trainingBooks.length; i++) {
+                if (!training.trainingBooks[i].read) {
+                    await Library.findByIdAndUpdate(training.trainingBooks[i].id, {readStatus: 'Going to read'});
+                }
              };
             await Training.findOneAndDelete({owner: _id});
         }
