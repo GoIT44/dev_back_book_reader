@@ -8,6 +8,18 @@
 </head>
 <body>
 
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.js" integrity="sha512-MNW6IbpNuZZ2VH9ngFhzh6cUt8L/0rSVa60F8L22K1H72ro4Ki3M/816eSDLnhICu7vwH/+/yb8oB3BtBLhMsA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const baseUrl = 'https://api-br.herokuapp.com/api';
+
+        axios.get(`${baseUrl}/library`, {
+            headers: {
+                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGZjOWEwZDc2OTA0YjU0YmU3N2FiOCIsImlhdCI6MTY0NTM3Mjg0NCwiZXhwIjoxNjQ1NDA4ODQ0fQ.KbwyYbzBEF4JEKHE4GYr63LR-Mnw_-EbXz2lVZz9jG4`
+            }
+        })
+        .then(res => console.log(...res.data.data.books))
+
     </script>
 </body>
 </html>
