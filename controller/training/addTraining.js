@@ -19,6 +19,12 @@ const addTraining = async (req, res) => {
 
     for (let i = 0; i < booksTrain.length; i++) {
        const library = await Library.findByIdAndUpdate(booksTrain[i], {readStatus: 'Reading now'});
+       if (!library) {
+            throw new BadRequest({
+            status: "error",
+            message: "Ты передаешь id не существующих книг. Проверь правильность id"
+        })
+       }
        totalPages += library.numbOfPages;
        trainingBooks = [
             ...trainingBooks,   

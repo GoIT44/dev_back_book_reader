@@ -65,7 +65,7 @@ const addResult = async(req, res) => {
     else {
         const date = new Date();
         let totalPagesResult = training.pagesResult + pagesResult;
-        const time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+        const time = date.getHours().toString().padStart(2, '0')+':'+date.getMinutes().toString().padStart(2, '0')+':'+date.getSeconds().toString().padStart(2, '0');
         const newResult = [...training.result, {dateResult, time, pagesResult}];
         const newTraining = await Training.findOneAndUpdate({owner:_id}, {pagesResult: totalPagesResult, result: newResult}, {new: true});
 
@@ -115,7 +115,7 @@ const addResult = async(req, res) => {
             code: 201,
             message:"Ты молодец, результат записан!!!",
              data: {
-                newTraining
+                training: newTraining
             }
         })
     }
