@@ -20,5 +20,7 @@ router.get('/google', controllerWrapper(auth.googleAuth));
 
 router.get('/google-redirect', controllerWrapper(auth.googleRedirect));
 
+router.get('/email-verify/:verificationToken', controllerWrapper(auth.emailVerify));
+
 
 module.exports = router;

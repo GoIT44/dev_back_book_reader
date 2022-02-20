@@ -37,7 +37,7 @@ const register = async (req, res) => {
         line-height: 32px;
         padding: 5px 20px;
         display: inline-block;
-        border-radius: 3px;" target="_blank" href="${BASE_URL}/users/verify/${verificationToken}">Подтвердить email</a></td>
+        border-radius: 3px;" target="_blank" href="${BASE_URL}/auth/email-verify/${verificationToken}">Подтвердить email</a></td>
     </tr>
     <tr>
         <td style="font-size:16px;font-weight:200;padding-top:30px;color:#303030">
