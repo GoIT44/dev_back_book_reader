@@ -11,14 +11,29 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.js" integrity="sha512-MNW6IbpNuZZ2VH9ngFhzh6cUt8L/0rSVa60F8L22K1H72ro4Ki3M/816eSDLnhICu7vwH/+/yb8oB3BtBLhMsA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        const baseUrl = 'https://api-br.herokuapp.com/api';
+        const baseUrl = 'http://localhost:3031/api';
 
         axios.get(`${baseUrl}/library`, {
             headers: {
-                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGZjOWEwZDc2OTA0YjU0YmU3N2FiOCIsImlhdCI6MTY0NTM3Mjg0NCwiZXhwIjoxNjQ1NDA4ODQ0fQ.KbwyYbzBEF4JEKHE4GYr63LR-Mnw_-EbXz2lVZz9jG4`
+                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGZjOWEwZDc2OTA0YjU0YmU3N2FiOCIsImlhdCI6MTY0NTM4MjY1MSwiZXhwIjoxNjQ1NDE4NjUxfQ.mq3xLP4yYJL9-39Z3qp1Q_l-lrHeNj8GIH82lX03-J0`
             }
         })
-        .then(res => console.log(...res.data.data.books))
+        .then(res => console.log(res.data.data.books))
+
+        const data = {
+                bookTitle: 'Test',
+                author: 'test',
+                publicDate: '2022-05-02',
+                numbOfPages: 567
+            }
+
+        // axios.post(`${baseUrl}/library/addBook`, data, {
+        //     headers: {
+        //         'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGZjOWEwZDc2OTA0YjU0YmU3N2FiOCIsImlhdCI6MTY0NTM4MjY1MSwiZXhwIjoxNjQ1NDE4NjUxfQ.mq3xLP4yYJL9-39Z3qp1Q_l-lrHeNj8GIH82lX03-J0`
+        //     }
+        // })
+        // .then(res => console.log(res))
+        // .catch(error => console.log(error))
 
     </script>
 </body>
