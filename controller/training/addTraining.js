@@ -30,6 +30,8 @@ const addTraining = async (req, res) => {
             ...trainingBooks,   
             {
                 id: booksTrain[i],
+                bookTitle: library.bookTitle,
+                author: library.author,
                 numbOfPages: library.numbOfPages,
                 read: false
             }
